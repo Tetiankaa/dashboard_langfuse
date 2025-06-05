@@ -5,6 +5,7 @@ import { config } from "./configs/config";
 import { authRoutes } from "./routes/auth.route";
 import { ApiError } from "./errors/api-error";
 import { traceRoutes } from "./routes/trace.route";
+import { sessionRoutes } from "./routes/session.route";
 import userService from "./services/user.service";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/traces', traceRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 app.use("/{*any}", (err: ApiError, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500).json(err.message);

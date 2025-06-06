@@ -1,0 +1,25 @@
+.textWithIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+
+    span {
+        display: inline-flex;
+        color: white;
+
+        svg {
+            width: 1.9rem;
+            height: 1.9rem;
+        }
+    }
+
+    .subscriptionColor {
+        color: gold;
+    }
+
+    .subscriptionText {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+}

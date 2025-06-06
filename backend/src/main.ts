@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import { config } from "./configs/config";
 import { authRoutes } from "./routes/auth.route";
@@ -9,6 +10,14 @@ import { sessionRoutes } from "./routes/session.route";
 import userService from "./services/user.service";
 
 const app = express();
+
+app.use(
+    cors({
+        origin: `*`,
+        methods: ["GET", "POST", ],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

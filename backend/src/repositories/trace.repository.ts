@@ -1,3 +1,5 @@
+import { FilterQuery } from "mongoose";
+
 import { ITraceDetails } from "../interfaces/trace.interface";
 import { Trace } from "../models/trace.model";
 import { IQuery } from "../interfaces/query.interface";
@@ -25,9 +27,24 @@ class TraceRepository {
 
         const skip = (page - 1) * limit;
 
-        const totalItems = await Trace.countDocuments();
+        const { fromTimestamp, toTimestamp } = query;
 
-        const data = await Trace.find().skip(skip).limit(limit);
+        const now = new Date();
+
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59 );
+
+        const filter: FilterQuery<ITraceDetails> = {
+            createdAt: { $gte: startOfMonth, $lte: endOfMonth }
+        }
+
+        if (fromTimestamp && toTimestamp) {
+            filter.createdAt = { $gte: fromTimestamp, $lte: toTimestamp }
+        }
+
+        const totalItems = await Trace.countDocuments(filter);
+
+        const data = await Trace.find(filter).skip(skip).limit(limit);
 
         return {
             data,
